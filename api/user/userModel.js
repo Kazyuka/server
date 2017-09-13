@@ -14,6 +14,5 @@ var UserSchema = new Schema({
     friends: [FriendShema]
 });
 
-
 exports.User = mongoose.model('User',UserSchema);
-exports.Friends = mongoose.model('Friend',FriendShema);
+exports.Friend = mongoose.model('Friend',FriendShema);

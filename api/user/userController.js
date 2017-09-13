@@ -1,7 +1,7 @@
 'use strict';
 
 var User = require('./userModel').User;
-var Friend = require('./userModel').Friends;
+var Friend = require('./userModel').Friend;
 
 exports.create = function (req, res) {
 
@@ -43,29 +43,34 @@ exports.addFriend = function (req, res) {
 };
 
 exports.removeFriend = function (req, res) {
-    console.log(req.params.friendId);
 
     User.findById(req.params.id, function (err,user) {
         if (err) return handleError(err);
 
         for(var i = 0; i < user.friends.length; i++) {
             var obj = user.friends[i];
-            console.log(obj)
-        }
 
+            if(obj.id === req.params.idFriend){
+
+                obj.remove(obj, function (err) {
+                    if (err) return handleError(err);
+                    user.save();
+                    res.send("Friend was delete");
+                });
+            }
+        }
     });
 };
 
 exports.removeUser = function (req, res) {
-    console.log(req.params.friendId);
 
     User.findById(req.params.id, function (err,user) {
         if (err) return handleError(err);
 
-        for(var i = 0; i < user.friends.length; i++) {
-            var obj = user.friends[i];
-            console.log(obj)
-        }
+        user.remove(user, function (err) {
+            if (err) return handleError(err);
 
+            res.send("user was delete");
+        });
     });
 };
