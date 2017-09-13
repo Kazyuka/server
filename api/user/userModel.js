@@ -5,11 +5,15 @@ var express = require("express");
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
-
-    name: String,
-    friends:[UserSchema]
-
+var FriendShema = new Schema ({
+    name: String
 });
 
-exports.User = mongose.model('User',shema);
+var UserSchema = new Schema({
+    name: String,
+    friends: [FriendShema]
+});
+
+
+exports.User = mongoose.model('User',UserSchema);
+exports.Friends = mongoose.model('Friend',FriendShema);
