@@ -1,76 +1,85 @@
 'use strict';
 
 var User = require('./userModel').User;
-var Friend = require('./userModel').Friend;
 
 exports.create = function (req, res) {
 
-    var friend = new Friend( { name: req.body.name });
-
     var user = new User({
         name: req.body.name,
-        friends: [friend]}
+        friends: []}
     );
-
-    user.save(function (err,user) {
-        if (err) return handleError(err);
-         res.send(user);
+    user.save().then(function (user) {
+        res.send(user);
+    }).catch(function (err) {
+        return handleError(err)
     });
 };
 
 exports.findUser = function (req, res) {
 
-    User.findById(req.params.id, function (err,user) {
-        if (err) return handleError(err);
+    var id = req.params.id;
+
+    User.findById(id).then(function (user) {
         res.json(user);
+    }).catch(function (err) {
+        return handleError(err)
     });
 };
 
 exports.addFriend = function (req, res) {
 
-    var newFriend = new Friend( { name: "test" });
+   var id = req.params.id;
+   var newFriend = new  User({
+        name: req.params.newFriend}
+    );
 
-    User.findById(req.params.id, function (err,user) {
-        if (err) return handleError(err);
-
+    User.findById(id).then(function (user) {
         user.friends.push(newFriend);
-
-        user.save(function (err, updatedUser) {
-            if (err) return handleError(err);
+        user.save().then(function (updatedUser) {
             res.send(updatedUser);
         });
-    });
+    }).catch(function (error) {
+        console.log(error);
+    })
 };
-
 exports.removeFriend = function (req, res) {
 
-    User.findById(req.params.id, function (err,user) {
-        if (err) return handleError(err);
 
-        for(var i = 0; i < user.friends.length; i++) {
-            var obj = user.friends[i];
 
-            if(obj.id === req.params.idFriend){
+    User
+  User.findAndFilter()
+    var id = req.params.id;
+     User.
+     findById(id).
+     exec(function (err, user) {
 
-                obj.remove(obj, function (err) {
-                    if (err) return handleError(err);
-                    user.save();
-                    res.send("Friend was delete");
-                });
-            }
-        }
-    });
+         if (err) return handleError(err);
+
+         for(var i = 0; i < user.friends.length; i++) {
+             var obj = user.friends[i];
+
+             if(obj == req.params.idFriend){
+
+                var us = user.friends.remove(obj)
+                 user.save();
+             }
+         }
+     });
 };
 
 exports.removeUser = function (req, res) {
 
-    User.findById(req.params.id, function (err,user) {
-        if (err) return handleError(err);
+    var id = req.params.id;
 
-        user.remove(user, function (err) {
-            if (err) return handleError(err);
+    User.findById(id).then(function (user) {
+
+        user.remove().then(function (user) {
 
             res.send("user was delete");
         });
+
+    }).catch(function (eror) {
+
+        console.log(eror);
     });
 };
