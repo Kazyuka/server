@@ -5,12 +5,16 @@ var User = require('./userModel').User;
 exports.create = function (req, res) {
 
     var user = new User({
+
         name: req.body.name,
-        friends: []}
-    );
-    user.save().then(function (user) {
-        res.send(user);
+    });
+
+     user.save().then(function (user) {
+
+        return res.send(user);
+
     }).catch(function (err) {
+
         return handleError(err)
     });
 };
@@ -20,8 +24,11 @@ exports.findUser = function (req, res) {
     var id = req.params.id;
 
     User.findById(id).then(function (user) {
-        res.json(user);
+
+        return res.send(user);
+
     }).catch(function (err) {
+
         return handleError(err)
     });
 };
@@ -29,35 +36,39 @@ exports.findUser = function (req, res) {
 exports.addFriend = function (req, res) {
 
    var id = req.params.id;
+
    var newFriend = new  User({
-        name: req.params.newFriend}
-    );
+        name: req.params.newFriend
+   });
 
     User.findById(id).then(function (user) {
+
+        console.log( user.friends);
+
         user.friends.push(newFriend);
-        user.save().then(function (updatedUser) {
-            res.send(updatedUser);
-        });
+
+        console.log( user.friends);
+        return user.save();
+
+    }).then(function (newFriend) {
+
+        return res.send(newFriend);
+
     }).catch(function (error) {
         console.log(error);
     })
 };
 exports.removeFriend = function (req, res) {
 
+    var idUser = req.params.id;
 
-
-    User
-  User.findAndFilter()
-    var id = req.params.id;
      User.
-     findById(id).
+     findById(idUser).
      exec(function (err, user) {
-
-         if (err) return handleError(err);
-
-         for(var i = 0; i < user.friends.length; i++) {
+         
+     for(var i = 0; i < user.friends.length; i++) {
              var obj = user.friends[i];
-
+            console.log(obj.name);
              if(obj == req.params.idFriend){
 
                 var us = user.friends.remove(obj)
@@ -73,10 +84,11 @@ exports.removeUser = function (req, res) {
 
     User.findById(id).then(function (user) {
 
-        user.remove().then(function (user) {
+        return user.remove()
 
-            res.send("user was delete");
-        });
+    }).then(function (removeUser) {
+
+        return console.log('user was remove' + removeUser);
 
     }).catch(function (eror) {
 

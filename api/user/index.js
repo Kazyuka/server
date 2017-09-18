@@ -5,10 +5,10 @@ var userController = require('./userController');
 
 var router = express.Router();
 
-router.post("/add_user/", userController.create);
-router.get("/get_user/:id", userController.findUser);
-router.post("/add_new_friend/:id/:newFriend/", userController.addFriend);
-router.post("/remove_friend/:id/:idFriend/", userController.removeFriend);
-router.delete("/remove_user/:id/", userController.removeUser);
+router.post("/create/user/", userController.create);
+router.get("/get/user/:id", userController.findUser);
+router.post("/add/friend/:id/:newFriend/", userController.addFriend);
+router.post("/remove/friend/:id/:idFriend/", userController.removeFriend);
+router.delete("/remove/user/:id/", userController.removeUser);
 
 module.exports = router;
