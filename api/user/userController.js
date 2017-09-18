@@ -5,7 +5,6 @@ var User = require('./userModel').User;
 exports.create = function (req, res) {
 
     var user = new User({
-
         name: req.body.name,
     });
 
@@ -43,16 +42,12 @@ exports.addFriend = function (req, res) {
 
     User.findById(id).then(function (user) {
 
-        console.log( user.friends);
-
         user.friends.push(newFriend);
-
-        console.log( user.friends);
         return user.save();
 
-    }).then(function (newFriend) {
+    }).then(function (updateUser) {
 
-        return res.send(newFriend);
+        return res.send(updateUser);
 
     }).catch(function (error) {
         console.log(error);
@@ -65,11 +60,11 @@ exports.removeFriend = function (req, res) {
      User.
      findById(idUser).
      exec(function (err, user) {
-         
+
      for(var i = 0; i < user.friends.length; i++) {
              var obj = user.friends[i];
-            console.log(obj.name);
-             if(obj == req.params.idFriend){
+
+            if(obj == req.params.idFriend){
 
                 var us = user.friends.remove(obj)
                  user.save();
