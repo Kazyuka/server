@@ -24,8 +24,7 @@ exports.findUser = function (req, res) {
 };
 
 exports.addFriend = function (req, res) {
-
-   var id = req.body.id;
+   var id = req.params.id;
    var newFriend = new  User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.nameFriend
@@ -44,8 +43,8 @@ exports.addFriend = function (req, res) {
    })
 };
 exports.removeFriend = function (req, res) {
-    var idFriend = req.params.id;
-    var idUser = req.body.id
+    var idFriend = req.body.id;
+    var idUser = req.params.id
 
    User.
     findById(idUser).
@@ -73,3 +72,11 @@ exports.removeUser = function (req, res) {
         console.log(eror);
     });
 };
+
+exports.showAllUsers = function (req, res) {
+    User.find().then(function (users) {
+        return res.send(users);
+    }).catch(function (error) {
+        console.log(eror);
+    })
+}
