@@ -6,13 +6,11 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "",
+  "author": "Ruslan",
   "license": "ISC",
   "dependencies": {
     "body-parser": "^1.18.1",
-    "express": "github:visionmedia/express",
     "mongodb": "^2.2.31",
-    "mongoose": "^4.10.8",
-    "mongoose-find-and-filter": "^1.0.0"
+    "mongoose": "^4.10.8"
   }
 }
