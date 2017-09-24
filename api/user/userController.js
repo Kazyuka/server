@@ -4,7 +4,6 @@ var mongoose = require('mongoose');
 var userExtention = require('./userExtension')
 
 exports.create = function (req, res) {
-
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -85,7 +84,6 @@ exports.showAllUsers = function (req, res) {
 };
 
 exports.friendRequest = function (req, res) {
-
     var idUser = req.params.id
     User.
     findById(idUser).
@@ -99,7 +97,6 @@ exports.friendRequest = function (req, res) {
 };
 
 exports.cancelFriendRequest = function (req, res) {
-
     var idUser = req.params.id
     User.
     findById(idUser).
@@ -113,7 +110,6 @@ exports.cancelFriendRequest = function (req, res) {
 };
 
 exports.acceptFriendRequest = function (req, res) {
-
     var idUser = req.params.id
     User.
     findById(idUser).
