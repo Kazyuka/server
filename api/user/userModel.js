@@ -6,7 +6,8 @@ var Schema = mongoose.Schema;
 var userSchema = new Schema({
     _id: Schema.Types.ObjectId,
     name: String,
-    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friendsRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
 exports.User = mongoose.model('User',userSchema);
