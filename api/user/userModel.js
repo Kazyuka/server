@@ -1,15 +1,13 @@
 'use strict';
-
 var express = require("express");
-
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var UserSchema = new Schema({
-
+var userSchema = new Schema({
+    _id: Schema.Types.ObjectId,
     name: String,
-    friends:[UserSchema]
-
+    friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
+    friendsRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }]
 });
 
-exports.User = mongose.model('User',shema);
+exports.User = mongoose.model('User',userSchema);
