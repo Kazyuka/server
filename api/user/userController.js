@@ -1,8 +1,10 @@
 'use strict';
 var User = require('./userModel').User;
 var mongoose = require('mongoose');
+var userExtention = require('./userExtension')
 
 exports.create = function (req, res) {
+
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name
@@ -51,6 +53,7 @@ exports.removeFriend = function (req, res) {
     populate('friends').exec().then(function (user) {
 
        var positiveArr = user.friends.filter(function(number) {
+ 		   console.log(number.id);
            return number.id != idFriend;
        })
         user.friends = positiveArr;
@@ -79,4 +82,4 @@ exports.showAllUsers = function (req, res) {
     }).catch(function (error) {
         console.log(eror);
     })
-}
+};
