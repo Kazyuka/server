@@ -1,7 +1,6 @@
 'use strict';
 var User = require('./userModel').User;
 var mongoose = require('mongoose');
-var userExtention = require('./userExtension')
 
 exports.create = function (req, res) {
     var user = new User({
@@ -52,7 +51,6 @@ exports.removeFriend = function (req, res) {
     populate('friends').exec().then(function (user) {
 
        var positiveArr = user.friends.filter(function(number) {
-           console.log(number.id);
            return number.id != idFriend;
        })
         user.friends = positiveArr;
@@ -81,43 +79,4 @@ exports.showAllUsers = function (req, res) {
     }).catch(function (error) {
         console.log(eror);
     })
-};
-
-exports.friendRequest = function (req, res) {
-    var idUser = req.params.id
-    User.
-    findById(idUser).
-    populate('friendsRequests').exec().then(function (user) {
-        return userExtention.friendRequestExtention(user,req);
-    }).then(function (user) {
-        return console.log(user)
-    }).catch(function (error) {
-        return console.log(error);
-    })
-};
-
-exports.cancelFriendRequest = function (req, res) {
-    var idUser = req.params.id
-    User.
-    findById(idUser).
-    populate('friendsRequests').exec().then(function (user) {
-        return userExtention.cancelFriendRequestExtention(user,req);
-    }).then(function (user) {
-        return console.log(user)
-    }).catch(function (error) {
-        return console.log(error);
-    })
-};
-
-exports.acceptFriendRequest = function (req, res) {
-    var idUser = req.params.id
-    User.
-    findById(idUser).
-    populate('friendsRequests').exec().then(function (user) {
-        return userExtention.acceptFriendRequestExtention(user,req);
-    }).then(function (user) {
-        return console.log(user)
-    }).catch(function (error) {
-        return console.log(error);
-    })
-};
+}
