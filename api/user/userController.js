@@ -1,10 +1,6 @@
 'use strict';
-var User = require('./userModel').User;
-var mongoose = require('mongoose');
-var userExtention = require('./userExtension')
 
 exports.create = function (req, res) {
-
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name

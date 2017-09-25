@@ -1,4 +1,5 @@
 'use strict';
+
 var express = require('express');
 var userController = require('./userController');
 
@@ -14,6 +15,5 @@ router.get("/users", userController.showAllUsers);
 router.delete("/users/:id/friends", userController.removeFriend);
 router.delete("/users/:id/", userController.removeUser);
 router.delete("/users/:id/friendrequests",userController.cancelFriendRequest);
-
 
 module.exports = router;
