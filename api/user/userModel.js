@@ -7,7 +7,7 @@ var userSchema = new Schema({
     _id: Schema.Types.ObjectId,
     name: String,
     friends: [{ type: Schema.Types.ObjectId, ref: 'User' }],
-    friendsRequests: [{ type: Schema.Types.ObjectId, ref: 'User' }]
+    friendsRequests: String
 });
 
 exports.User = mongoose.model('User',userSchema);

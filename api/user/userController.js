@@ -1,12 +1,13 @@
 'use strict';
 var User = require('./userModel').User;
 var mongoose = require('mongoose');
-var userExtention = require('./userExtension')
+var userService = require('./userService')
 
 exports.create = function (req, res) {
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
-        name: req.body.name
+        name: req.body.name,
+        friendsRequests: " "
     });
      user.save().then(function (user) {
         return res.send(user);
@@ -84,40 +85,21 @@ exports.showAllUsers = function (req, res) {
 };
 
 exports.friendRequest = function (req, res) {
-    var idUser = req.params.id
-    User.
-    findById(idUser).
-    populate('friendsRequests').exec().then(function (user) {
-        return userExtention.friendRequestExtention(user,req);
-    }).then(function (user) {
-        return console.log(user)
-    }).catch(function (error) {
-        return console.log(error);
+    var idUser = req.params.id;
+    var idFriends = req.body.id;
+    var friendsRequests = req.body.friendsRequests;
+    User.findById(idUser).populate('friends').exec().then(function (user) {
+
+        return User.findById(idFriends)
+            .then(function (friendUser) {
+               return userService.friendRequestService(user, friendUser, friendsRequests);
+
+            }).then(function (user) {
+                console.log(user)
+            }).catch(function (error) {
+
+                console.log(error)
+            })
     })
 };
 
-exports.cancelFriendRequest = function (req, res) {
-    var idUser = req.params.id
-    User.
-    findById(idUser).
-    populate('friendsRequests').exec().then(function (user) {
-        return userExtention.cancelFriendRequestExtention(user,req);
-    }).then(function (user) {
-        return console.log(user)
-    }).catch(function (error) {
-        return console.log(error);
-    })
-};
-
-exports.acceptFriendRequest = function (req, res) {
-    var idUser = req.params.id
-    User.
-    findById(idUser).
-    populate('friendsRequests').exec().then(function (user) {
-        return userExtention.acceptFriendRequestExtention(user,req);
-    }).then(function (user) {
-        return console.log(user)
-    }).catch(function (error) {
-        return console.log(error);
-    })
-};
