@@ -2,30 +2,28 @@
 var User = require('./userModel').User;
 var constants = require('../constants/constants');
 
-exports.friendRequestService = function (user, userFriend, friendsRequest) {
-
-
+exports.friendRequestService = function (user, userFriend, friendsRequest,friendId) {
 
     switch (friendsRequest) {
         case constants.CONFIRM:
-            return confirmOrRejectUserRequest(user, userFriend, constants.REJECT);
+            return userRequest(user, userFriend, constants.REJECT);
             break;
         case constants.REJECT:
-            return confirmOrRejectUserRequest(user, userFriend, constants.CONFIRM);
+            return userRequest(user, userFriend, constants.CONFIRM);
             break;
         case constants.DELETE:
-            return  addOrDeleteUserWithFriends(user, userFriend, constants.ADD);
+            return  deleteUserWithFriends(user, userFriend, constants.ADD);
             break;
         case  constants.ADD:
 
-            return addOrDeleteUserWithFriends(user, userFriend, constants.DELETE);
+            return addUserWithFriends(user, friendId, constants.DELETE);
             break;
         default:
           return  Promise.reject(new Error("Request does not exist "))
     }
 };
 
-function confirmOrRejectUserRequest (user, friendUser, friendsRequests) {
+function userRequest (user, friendUser, friendsRequests) {
 
    return new Promise(function(resolve, reject) {
         var filterUserArray = user.friends.filter(function(obj) {
@@ -57,26 +55,10 @@ function confirmOrRejectUserRequest (user, friendUser, friendsRequests) {
     })
 }
 
-function addOrDeleteUserWithFriends(user, friendUser, friendsRequests) {
+function deleteUserWithFriends(user, friendUser, friendsRequests) {
 
     return new Promise(function(resolve, reject) {
-        var filterUserArray = user.friends.filter(function(obj) {
-            return obj.id === friendUser.id;
-        })
 
-        console.log(filterUserArray.length)
-        if (filterUserArray.length == 0) {
-            friendUser.friendsRequests = request;
-            user.friends.push(friendUser)
-
-            console.log(friendUser)
-            user.save().then(function (user) {
-                resolve(user);
-            }).catch(function (error) {
-                reject(error);
-            })
-
-        } else {
             var result = user.friends.filter(function(obj) {
                 return obj.id != friendUser.id;
             });
@@ -87,7 +69,33 @@ function addOrDeleteUserWithFriends(user, friendUser, friendsRequests) {
             }).catch(function (error) {
                 reject(error);
             })
-        }
     })
 }
+
+function addUserWithFriends(user, friendId,friendsRequests) {
+
+    return new Promise(function(resolve, reject) {
+
+        User.findById(friendId).then(function (userFriend) {
+
+            var result = user.friends.filter(function(obj) {
+                console.log(obj.id)
+                return obj.id != friendId;
+            });
+
+                userFriend.friendsRequests = friendsRequests;
+                user.friends = result
+                user.friends.push(userFriend)
+                user.save().then(function (user) {
+                    resolve(user);
+                }).catch(function (error) {
+                    reject(error);
+                })
+
+        }).catch(function (error) {
+            return error;
+        })
+    })
+}
+
 

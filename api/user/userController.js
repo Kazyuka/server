@@ -86,13 +86,13 @@ exports.showAllUsers = function (req, res) {
 
 exports.friendRequest = function (req, res) {
     var idUser = req.params.id;
-    var idFriends = req.body.id;
+    var idFriend = req.body.id;
     var friendsRequests = req.body.friendsRequests;
     User.findById(idUser).populate('friends').exec().then(function (user) {
 
-        return User.findById(idFriends)
+        return User.findById(idFriend)
             .then(function (friendUser) {
-               return userService.friendRequestService(user, friendUser, friendsRequests);
+               return userService.friendRequestService(user, friendUser, friendsRequests ,idFriend);
 
             }).then(function (user) {
                 console.log(user)
