@@ -7,7 +7,7 @@ exports.create = function (req, res) {
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
-        friendsRequests: " "
+        action: " "
     });
      user.save().then(function (user) {
         return res.send(user);
@@ -84,22 +84,47 @@ exports.showAllUsers = function (req, res) {
     })
 };
 
+
 exports.friendRequest = function (req, res) {
-    var idUser = req.params.id;
-    var idFriend = req.body.id;
-    var friendsRequests = req.body.friendsRequests;
-    User.findById(idUser).populate('friends').exec().then(function (user) {
 
-        return User.findById(idFriend)
-            .then(function (friendUser) {
-               return userService.friendRequestService(user, friendUser, friendsRequests ,idFriend);
+   var userId = req.params.id;
+   var friendId = req.body.id;
 
-            }).then(function (user) {
-                console.log(user)
-            }).catch(function (error) {
+   console.log(req.session)
 
-                console.log(error)
-            })
+    User.findById(userId).then(function (user) {
+        return userService.sendRequestFriend(user, friendId);
+    }).then(function (user) {
+        return user
+    }).catch(function (error) {
+        console.log(error)
+        return error
     })
-};
+}
+
+exports.rejectRequest = function (req, res) {
+    var userId = req.params.id;
+    var friendId = req.body.id;
+    User.findById(userId).then(function (user) {
+        return userService.sendRejectRequest(user, friendId);
+    }).then(function (user) {
+        return user
+    }).catch(function (error) {
+        console.log(error)
+        return error
+    })
+}
+exports.acceptRequest = function (req, res) {
+    var userId = req.params.id;
+    var friendId = req.body.id;
+    User.findById(userId).then(function (user) {
+        return userService.sendAcceptRequest(user, friendId, friendAction);
+    }).then(function (user) {
+        return user
+    }).catch(function (error) {
+        console.log(error)
+        return error
+    })
+}
+
 
