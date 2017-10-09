@@ -2,8 +2,10 @@
 var User = require('./userModel').User;
 var mongoose = require('mongoose');
 var userService = require('./userService')
+var session = require('express-session')
 
 exports.create = function (req, res) {
+
     var user = new User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.name,
@@ -17,8 +19,9 @@ exports.create = function (req, res) {
 };
 
 exports.findUser = function (req, res) {
-    var id = req.params.id;
-    User.findById(id).then(function (user) {
+
+    var userId = req.headers.id
+    User.findById(userId).then(function (user) {
         return res.send(user);
     }).catch(function (err) {
         return handleError(err)
@@ -26,7 +29,7 @@ exports.findUser = function (req, res) {
 };
 
 exports.addFriend = function (req, res) {
-   var id = req.params.id;
+   var id = req.headers.id;
    var newFriend = new  User({
         _id: new mongoose.Types.ObjectId(),
         name: req.body.nameFriend
@@ -46,7 +49,7 @@ exports.addFriend = function (req, res) {
 };
 exports.removeFriend = function (req, res) {
     var idFriend = req.body.id;
-    var idUser = req.params.id
+    var idUser = req.headers.id
 
    User.
     findById(idUser).
@@ -66,7 +69,7 @@ exports.removeFriend = function (req, res) {
 };
 
 exports.removeUser = function (req, res) {
-    var id = req.params.id;
+    var id = req.headers.id;
    findById(id).then(function (user) {
         return user.remove()
     }).then(function (removeUser) {
@@ -87,10 +90,8 @@ exports.showAllUsers = function (req, res) {
 
 exports.friendRequest = function (req, res) {
 
-   var userId = req.params.id;
+   var userId = req.headers.id;
    var friendId = req.body.id;
-
-   console.log(req.session)
 
     User.findById(userId).then(function (user) {
         return userService.sendRequestFriend(user, friendId);
@@ -103,7 +104,7 @@ exports.friendRequest = function (req, res) {
 }
 
 exports.rejectRequest = function (req, res) {
-    var userId = req.params.id;
+    var userId = req.headers.id
     var friendId = req.body.id;
     User.findById(userId).then(function (user) {
         return userService.sendRejectRequest(user, friendId);
@@ -115,7 +116,7 @@ exports.rejectRequest = function (req, res) {
     })
 }
 exports.acceptRequest = function (req, res) {
-    var userId = req.params.id;
+    var userId = req.headers.id
     var friendId = req.body.id;
     User.findById(userId).then(function (user) {
         return userService.sendAcceptRequest(user, friendId, friendAction);
