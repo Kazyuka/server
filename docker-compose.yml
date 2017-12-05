@@ -4,8 +4,7 @@ services:
   web:
     build: .
     volumes:
-      - ./:/app
-      - /app/node_modules
+      - ./client/public
     ports:
       - '4000:4000'
     links:
